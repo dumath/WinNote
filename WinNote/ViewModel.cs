@@ -71,17 +71,31 @@ namespace WinNote
                     this._rows.Add(new Record(v));
             }
         }
+
+        /// <summary>
+        /// Метод добавления новой строки в БД.
+        /// </summary>
+        /// <param name="record"> Значение, указанное пользователем. </param>
         public void Add(string record)
         {
-            using(SqlConnection connection = new SqlConnection())
+            // После завершения - финализируем.
+            using (SqlConnection connection = new SqlConnection())
             {
+                // Ставим строку.
                 connection.ConnectionString = @"Строка убрана";
+                // Направляем адаптер.
                 adapter.Connection = connection;
+                // Создаем объект типизированной строки.
                 DS.RecordsRow newRow = myBase.Records.NewRecordsRow();
+                // Инициализируем столбец строкой пользователя.
                 newRow.Record = record;
+                // Добавляем в DSet.
                 myBase.Records.AddRecordsRow(newRow);
-                int i = adapter.Update(myBase); //TODO: Сделать проверку.
+                // Синхронизируем с БД.
+                int i = adapter.Update(myBase); //TODO: Сделать проверку. Можно myBase.Records
+                // Обновляем представление.
                 this._rows.Add(new Record(newRow));
+                // Меняем, возможно. State's. На всякий.
                 myBase.Records.AcceptChanges();
             }
         }
@@ -90,15 +104,23 @@ namespace WinNote
         /// Метод изменения строки в базе данных.
         /// </summary>
         /// <param name="record"> Новое значение столбца "Record". </param>
+        /// <param name="row"> SelectedRecord, с обработчика. </param>
         public void Edit(string record, Record row)
         {
+            // После завершения - финализируем.
             using (SqlConnection connection = new SqlConnection())
             {
+                // Ставим строку.
                 connection.ConnectionString = @"Строка убрана";
+                // Направляем адаптер.
                 adapter.Connection = connection;
+                // Ищем строку по ID и меняем значение столбца.
                 myBase.Records.FindByRecordID(row.RecordID).Record = record;
-                int i = adapter.Update(myBase.Records);
+                // Синхронизируем.
+                int i = adapter.Update(myBase.Records); //TODO: Поставить проверку. А тут только таблицу?
+                // Ищем строку в коллекции представления. Обновляем значение.
                 this._rows.First(x => x.RecordID == row.RecordID).Data = record;
+                // Меняем, возможно. State's. На всякий.
                 myBase.Records.AcceptChanges();
             }
         }
@@ -106,16 +128,23 @@ namespace WinNote
         /// <summary>
         /// Метод удаления строки из базы данных.
         /// </summary>
-        /// <param name="record"></param>
+        /// <param name="record"> SelectedRecord с обработчика. </param>
         public void Delete(Record row)
         {
+            // После завершения - финализируем.
             using (SqlConnection connection = new SqlConnection())
             {
+                // Ставим строку.
                 connection.ConnectionString = @"Строка убрана.";
+                // Направляем адаптер.
                 adapter.Connection = connection;
+                // Ищем строку в DataSet по ID, ставим метку.
                 myBase.Records.FindByRecordID(row.RecordID).Delete();
+                // Синхронизируем. 
                 int i = adapter.Update(myBase.Records); //TODO: Сделать проверку.
+                // Удаляем в представлении.
                 this._rows.Remove(row);
+                // Меняем, возможно.  State's. На всякий.
                 myBase.Records.AcceptChanges();
             }
         }
