@@ -7,6 +7,9 @@ namespace WinNote
 {
     internal sealed class ViewModel
     {
+        // TODO: Спрятать строку подключения.
+        // DS создан конструктором.
+
         #region Fields.
         // Коллекция под XAML. PropertyChanged+, CollectionChanged+.
         private ObservableCollection<Record> _rows = new ObservableCollection<Record>(); //TODO: DataSet напрямую?
@@ -41,6 +44,7 @@ namespace WinNote
         #region CTORS.
         public ViewModel()
         {
+            // Убираем nullExeption.
             this._connectionString = new SqlConnectionStringBuilder();
             myBase = new DS();
             this.adapter = new DSTableAdapters.RecordsTableAdapter();
@@ -53,11 +57,16 @@ namespace WinNote
         /// </summary>
         public void Connect()
         {
+            // После завершения - финализируем.
             using (SqlConnection sqlConnection = new SqlConnection())
             {
+                // Ставим строку.
                 sqlConnection.ConnectionString = @"Строка убрана.";
+                // Направляем адаптер.
                 adapter.Connection = sqlConnection;
-                adapter.Fill(myBase.Records);
+                // Заполняем DataSet.
+                adapter.Fill(myBase.Records); 
+                // Заполняем разметку.
                 foreach(DS.RecordsRow v in myBase.Records.Rows)
                     this._rows.Add(new Record(v));
             }
@@ -66,7 +75,7 @@ namespace WinNote
         {
             using(SqlConnection connection = new SqlConnection())
             {
-                connection.ConnectionString = @"Data Source=DESKTOP-HOESTCP\SQLEXPRESS;Initial Catalog=NotesDB;Integrated Security=True;";
+                connection.ConnectionString = @"Строка убрана";
                 adapter.Connection = connection;
                 DS.RecordsRow newRow = myBase.Records.NewRecordsRow();
                 newRow.Record = record;
