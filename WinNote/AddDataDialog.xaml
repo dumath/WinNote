@@ -1,0 +1,17 @@
+﻿<ContentDialog
+    x:Class="WinNote.AddDataDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinNote"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Добавление данных"
+    PrimaryButtonText="Добавить"
+    SecondaryButtonText="Отмена"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+    <Grid Padding="10">
+        <TextBox x:Name="addDataTextBox" FontSize="20" MinHeight="100" MinWidth="400"/>
+    </Grid>
+</ContentDialog>

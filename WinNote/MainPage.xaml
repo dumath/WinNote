@@ -1,0 +1,77 @@
+﻿<Page
+    x:Class="WinNote.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinNote"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    MinHeight="600"
+    MinWidth="600">
+
+    <Grid Style="{StaticResource DataStyle}">
+        <Grid x:Name="connectionGrid" Visibility="Visible" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*" MinHeight="200"/>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="20" Text="Строка подключения" TextAlignment="Center" FontSize="20"/>
+            <StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="20" Orientation="Vertical" Spacing="10" >
+                <TextBox x:Name="serverName"        Height="40" PlaceholderText="Имя/Адрес сервера" TextAlignment="Right" FontSize="20"/>
+                <TextBox x:Name="dbName"            Height="40" PlaceholderText="Имя базы данных" TextAlignment="Right" FontSize="20"/>
+                <TextBox x:Name="connectionTimeout" Height="40" PlaceholderText="Время ожидания" TextAlignment="Right" FontSize="20"/>
+                <StackPanel Orientation="Vertical" Spacing="4">
+                    <CheckBox x:Name="securityCB" HorizontalAlignment="Stretch" Margin="40,0" Content="Проверка подленности" HorizontalContentAlignment="Left" FontSize="16"/>
+                    <CheckBox x:Name="encryptCB"  HorizontalAlignment="Stretch" Margin="40,0" Content="Шифрование данных" HorizontalContentAlignment="Left" FontSize="16"/>
+                    <CheckBox x:Name="trustCerCB" HorizontalAlignment="Stretch" Margin="40,0" Content="Сертификат" HorizontalContentAlignment="Left" FontSize="16"/>
+                    <ComboBox x:Name="appIntent"  HorizontalAlignment="Stretch" Margin="40,0" PlaceholderText="Выберите намерение" HorizontalContentAlignment="Left" FontSize="16"/>
+                    <CheckBox x:Name="multiSub"   HorizontalAlignment="Stretch" Margin="40,0" Content="Повышенная доступность" HorizontalContentAlignment="Left" FontSize="16"/>
+                </StackPanel>
+                <TextBox TextAlignment="Right" Height="40" PlaceholderText="" Visibility="Collapsed"/>
+            </StackPanel>
+            <Button Grid.Row="3" Grid.Column="1" Margin="40" HorizontalAlignment="Stretch" VerticalAlignment="Top" MinHeight="40" Content="Подключение" Click="On_Connect"/>
+        </Grid>
+        <Grid x:Name="dataGrid" Visibility="Collapsed">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                </Grid.ColumnDefinitions>
+                <MenuBar Grid.Row="1" Grid.Column="1">
+                    <MenuBarItem Title="File">
+                        <MenuFlyoutItem Text="Выйти" Click="On_Connection_Grid"/>
+                    </MenuBarItem>
+                </MenuBar>
+                <ListView x:Name="dataBook" Grid.Row="2" Grid.Column="1" Margin="10" IsItemClickEnabled="True" Background="White" ItemClick="show_Edit_Delete_Button" RightTapped="hide_Edit_Delete_Button" >
+                </ListView>
+                <CommandBar Grid.Row="3" Grid.Column="1" Background="Transparent" ClosedDisplayMode="Minimal" IsOpen="False" >
+                    <AppBarButton Icon="Add" Click="add_Record"/>
+                    <AppBarButton x:Name="edit_Bar_Button" Icon="Edit" IsEnabled="False" Click="edit_Record"/>
+                    <AppBarButton x:Name="delete_Bar_Button" Icon="Delete" IsEnabled="False" Click="delete_Record"/>
+                </CommandBar>
+            </Grid>
+        </Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</Page>
