@@ -7,13 +7,23 @@ namespace WinNote
 {
     internal sealed class ViewModel
     {
-        public string DebugString { get; set; }
+        #region Fields.
+        // Коллекция под XAML. PropertyChanged+, CollectionChanged+.
+        private ObservableCollection<Record> _rows = new ObservableCollection<Record>(); //TODO: DataSet напрямую?
+        private SqlConnectionStringBuilder _connectionString = null; // Собираем строку.
+        private DS myBase; // Абстракция бд. Типизированная. Промежуточное.
+        private DSTableAdapters.RecordsTableAdapter adapter; // Типизированный адаптер.
+        #endregion
 
-        private ObservableCollection<Record> _rows = new ObservableCollection<Record>();
+        #region Properties.
         public ObservableCollection<Record> Rows { get => this._rows; }
+        public SqlConnectionStringBuilder ConnectionString { get => _connectionString; } // Использует Connection Grid.
+        public string DebugString { get; set; } // Отладочная строка.
+        public DS MyBase { get => myBase; } // Временно убрано.
+        #endregion
 
         #region Const.
-        // Основные команды T_SQL и сообщения ошибок.
+        // Основные команды T_SQL. Для дебага. Через SqlCommand - объект.
         public const string CREATE = "CREATE"; // Создать.
         public const string INSERT = "INSERT INTO"; // Вставить.
         public const string UPDATE = "UPDATE";
@@ -26,15 +36,6 @@ namespace WinNote
         public const string WHERE = "WHERE"; // Условие.
         public const string ORDER_BY = "ORDER BY"; // Сортировка.
         public const string TABLE = "TABLE"; // Таблица.
-        #endregion
-
-        #region Connection, Adaptation.
-        private SqlConnectionStringBuilder _connectionString = null;
-        public SqlConnectionStringBuilder ConnectionString { get => _connectionString; }
-
-        private DS myBase;
-        public DS MyBase { get => myBase; }
-        private DSTableAdapters.RecordsTableAdapter adapter;
         #endregion
 
         #region CTORS.
@@ -54,7 +55,7 @@ namespace WinNote
         {
             using (SqlConnection sqlConnection = new SqlConnection())
             {
-                sqlConnection.ConnectionString = @"Data Source=DESKTOP-HOESTCP\SQLEXPRESS;Initial Catalog=NotesDB;Integrated Security=True;";
+                sqlConnection.ConnectionString = @"Строка убрана.";
                 adapter.Connection = sqlConnection;
                 adapter.Fill(myBase.Records);
                 foreach(DS.RecordsRow v in myBase.Records.Rows)
@@ -84,7 +85,7 @@ namespace WinNote
         {
             using (SqlConnection connection = new SqlConnection())
             {
-                connection.ConnectionString = @"Data Source=DESKTOP-HOESTCP\SQLEXPRESS;Initial Catalog=NotesDB;Integrated Security=True;";
+                connection.ConnectionString = @"Строка убрана";
                 adapter.Connection = connection;
                 myBase.Records.FindByRecordID(row.RecordID).Record = record;
                 int i = adapter.Update(myBase.Records);
@@ -101,7 +102,7 @@ namespace WinNote
         {
             using (SqlConnection connection = new SqlConnection())
             {
-                connection.ConnectionString = @"Data Source=DESKTOP-HOESTCP\SQLEXPRESS;Initial Catalog=NotesDB;Integrated Security=True;";
+                connection.ConnectionString = @"Строка убрана.";
                 adapter.Connection = connection;
                 myBase.Records.FindByRecordID(row.RecordID).Delete();
                 int i = adapter.Update(myBase.Records); //TODO: Сделать проверку.

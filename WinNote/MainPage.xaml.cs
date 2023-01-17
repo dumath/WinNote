@@ -9,14 +9,7 @@ using Windows.UI.Popups;
 
 namespace WinNote
 {
-    /* Data Source=DESKTOP-HOESTCP\SQLEXPRESS;
-     * NotesDB
-     * Integrated Security=True;
-     * Connect Timeout=30;
-     * Encrypt=False;
-     * TrustServerCertificate=False;
-     * ApplicationIntent=ReadWrite;
-     * MultiSubnetFailover=False*/
+    
 
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
